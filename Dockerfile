@@ -16,10 +16,14 @@ COPY . /code/
 
 ADD . /code/
 
-#RUN mkdir -p /vol/web/media
-#RUN mkdir -p /vol/web/static
+#-p, --parents
+#no error if existing, make parent directories as needed
+RUN mkdir -p /code/media
+RUN mkdir -p /code/static
 #-D - create user to run app only not having /home dir
 RUN adduser -D user
-#RUN chown -R user:user /vol/
-#RUN chmod -R 755 /vol/web
+RUN chown -R user:user /code/
+RUN chmod -R 755 /code/media
+RUN chmod -R 755 /code/static
+RUN chmod +x /code/entrypoint.sh
 USER user
