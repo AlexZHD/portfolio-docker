@@ -1,0 +1,31 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:11-alpine
+    volumes:
+      # To persist the data beyond the life of the container we configure a volume. 
+      # This config will bind postgres_data to the "/var/lib/postgresql/data/" 
+      # directory in the container.
+      - postgres_data:/var/lib/postgresql/data/
+  web:
+    build:
+      context: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    command:
+      sh -c "python manage.py runserver 0.0.0.0:8000"  
+    environment:
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=postgres
+      - SQL_USER=postgres
+      - SQL_PASSWORD=django1234
+      - SQL_HOST=db
+      - SQL_PORT=5432
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
