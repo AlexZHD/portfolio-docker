@@ -3,11 +3,12 @@ LABEL maintainer www.zmachy.com
 
 ENV PYTHONUNBUFFERED 1
 
-COPY ./requirements.txt /requirements.txt
+COPY requirements/base.txt /base.txt
+COPY requirements/prod.txt /prod.txt
 RUN apk add --update --no-cache postgresql-client jpeg-dev
 RUN apk add --update --no-cache --virtual .tmp-build-deps \
         gcc libc-dev linux-headers postgresql-dev musl-dev zlib zlib-dev
-RUN pip install -r /requirements.txt
+RUN pip install -r prod.txt
 RUN apk del .tmp-build-deps
 
 RUN mkdir /code
@@ -25,5 +26,5 @@ RUN adduser -D user
 RUN chown -R user:user /code/
 RUN chmod -R 755 /code/media
 RUN chmod -R 755 /code/static
-RUN chmod +x /code/entrypoint.sh
+RUN chmod +x /code/entrypoint_prod.sh
 USER user
