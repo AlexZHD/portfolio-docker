@@ -19,12 +19,12 @@ ADD . /code/
 
 #-p, --parents
 #no error if existing, make parent directories as needed
-RUN mkdir -p /code/media
+RUN mkdir -p /code/uploads
 RUN mkdir -p /code/static
 #-D - create user to run app only not having /home dir
 RUN adduser -D user
 RUN chown -R user:user /code/
-RUN chmod -R 755 /code/media
+RUN chmod -R 755 /code/uploads
 RUN chmod -R 755 /code/static
 RUN chmod +x /code/entrypoint_prod.sh
 USER user
