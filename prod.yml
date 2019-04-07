@@ -1,0 +1,49 @@
+version: '3.1'
+
+services:
+  db:
+    image: postgres:11-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+        - db_network
+  web:
+    build:
+      context: .
+      dockerfile: docker/prod/python/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_volume:/code/static
+      - media_volume:/code/uploads
+    command:
+      sh /code/entrypoint_prod.sh
+    environment:
+      - env_file
+    networks:
+      - db_network
+      - web_network
+    depends_on:
+      - db
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/prod/nginx/Dockerfile
+    ports:
+      - "8060:80"
+    volumes:
+      - static_volume:/code/static
+      - media_volume:/code/uploads
+    networks:
+      - web_network
+    depends_on: 
+      - web
+networks:
+  db_network:
+    driver: bridge
+  web_network:
+    driver: bridge
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
