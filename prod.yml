@@ -19,7 +19,7 @@ services:
     command:
       sh /code/entrypoint_prod.sh
     environment:
-      - env_file
+      - DJANGO_SETTINGS_MODULE=portfolio.settings.prod
     networks:
       - db_network
       - web_network
