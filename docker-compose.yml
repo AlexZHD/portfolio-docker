@@ -20,7 +20,7 @@ services:
       sh /code/entrypoint.sh
       # sh -c "python manage.py runserver 0.0.0.0:8000"  
     environment:
-      - env_file
+      - DJANGO_SETTINGS_MODULE=portfolio.settings.dev
     depends_on:
       - db
 
